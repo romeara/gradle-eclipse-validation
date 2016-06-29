@@ -24,6 +24,10 @@ To use in test projects, apply the plug-in via:
     }
 
     apply plugin: 'com.rsomeara.gradle.eclipse.validation'
+    
+# Environment/Languages
+
+The plug-in uses Java 1.7 to match the current Gradle environment
 
 # Licensing
 
