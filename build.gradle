@@ -2,7 +2,7 @@ apply plugin: 'groovy'
 apply plugin: 'eclipse'
 
 group = 'com.rsomeara'
-version = '0.1'
+version = '0.1-SNAPSHOT'
 
 description = 'Gradle plug-in which allows configuration of Eclipse validation preferences'
 
