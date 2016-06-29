@@ -7,8 +7,8 @@ version = '0.1-SNAPSHOT'
 
 description = 'Gradle plug-in which allows configuration of Eclipse validation preferences'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 sourceSets {
     main {
@@ -30,10 +30,28 @@ jar {
     }
 }
 
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: mavenLocal().url)
+            pom.project {
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+            }
+        }
+    }
+}
+
 eclipse {
 	classpath {
+        String containerDefinition = "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${sourceCompatibility}"
 		downloadSources=true
-		containers = [ "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${sourceCompatibility}" ]
+		containers = [ containerDefinition ]
 	}
 }
 
