@@ -1,0 +1,22 @@
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+
+group = 'com.rsomeara'
+version = '0.1'
+
+description = 'Gradle plug-in which allows configuration of Eclipse validation preferences'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+}
+
+eclipse {
+	classpath {
+		downloadSources=true
+		containers = [ "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${sourceCompatibility}" ]
+	}
+}
