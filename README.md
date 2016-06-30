@@ -27,7 +27,7 @@ To use in test projects, apply the plug-in via:
     
 # Environment/Languages
 
-The plug-in uses Java 1.7 to match the current Gradle environment
+The plug-in uses Java 1.6 to match the Gradle 2.0 minimum environment
 
 # Licensing
 
