@@ -7,8 +7,8 @@ version = '0.1-SNAPSHOT'
 
 description = 'Gradle plug-in which allows configuration of Eclipse validation preferences'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 sourceSets {
     main {
@@ -55,6 +55,8 @@ eclipse {
 	}
 }
 
+//Use the 2.0 wrapper so that gradleApi gets the 2.0 API jars
+//Unfortunately this exposes us to issue GRADLE-1715 (https://issues.gradle.org/browse/GRADLE-1715)
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14'
+    gradleVersion = '2.0'
 }
