@@ -4,6 +4,10 @@ Eclipse validation preferences control what validators run on project source, an
 
 # org.eclipse.wst.validation.prefs
 
+## Builder Options
+
+TODO org.eclipse.wst.validation.validationbuilder
+
 ## Preference Behavior
 
 The preferences controlling validator behavior are stored in the `org.eclipse.wst.validation.prefs` file, under the `.settings` directory in the project root. This file follows a standard properties file format of key-value pairs.
@@ -21,6 +25,12 @@ Preference handling and formatting is spread across several files - the formatti
 * [org.eclipse.wst.validation.internal.ProjectConfiguration][ProjectConfiguration].store()
     * Handles top-level non-validator related preferences
     
+## Known Validator IDs
+
+Validator ID is used heavily in prefence storage. Some known IDs are:
+
+TODO
+    
 ## Preference Key/Value Specification
 
 ### Relevant Classes
@@ -33,6 +43,9 @@ Preference handling and formatting is spread across several files - the formatti
 * [org.eclipse.wst.validation.internal.ExtensionConstants][ExtensionConstants]
 * [org.eclipse.wst.validation.MessageSeveritySetting][MessageSeveritySetting]
 * [org.eclipse.wst.validation.internal.model.FilterGroup][FilterGroup]
+* [org.eclipse.wst.validation.internal.Serializer][Serializer]
+
+
 
 ### Key/Value Layout
 
@@ -71,13 +84,31 @@ Preference handling and formatting is spread across several files - the formatti
 
 For each validator, the Eclipse framework supports 3 keys. These utilize the validator's unique ID in their specification, indicated by `[validtorID]`
 
+For most of the values specific to each validator, the [Serializer] plays a large role in how the preferences are saved into the properties file. Most strings are preceeded by their length minus 1, and most numeric values (including the string lengths) are also preceeded by the number of digits in them minus 1. For example, the string "example", when passed through the serializer, results in `06example` 
+
 * **Key:** `vals/[validatorID]/global`
     * **Defined by Constant:** [PrefConstants].global
     * **Value:** `["T" || "F"] + ["T" || "F"] + [int] + [int] + ["" || ([int] + [int] + [delegateID])]`
-    * **Value Defined By:** {validator manual setting (true/false)} + {validator build setting(true/false)} + {length of validator version number - 1} + {validator version} + {length of the length of the delegate ID - 1, if delegating} + {length of delegate ID, if delegating} + {delegate ID, if delegating}
+    * **Value Defined By:** {validator manual setting (true/false)} + {validator build setting(true/false)} + {length of validator version number - 1} + {validator version} + {length of the length of the delegate ID, if delegating} + {length of delegate ID - 1, if delegating} + {delegate ID, if delegating}
     * **Special:** Only included if changed from global settings for validation
-* TODO **Key:** `vals/[validatorID]/msgs`
-* TODO **Key:** `vals/[validatorID]/groups`
+* **Key:** `vals/[validatorID]/msgs`
+    * **Defined by Constant:** [PrefConstants].msgs
+    * **Value:** For Each Severity: `[int] + [int] + [message setting ID] + [int] + [int]`
+    * **Value Defined By:** {length of the length of the message setting ID - 1} + {length of the message setting ID} + {messaging setting ID} + {length of the severity setting - 1} + {severity setting}
+    * **Severity Settings:**
+        * Error = `0`
+        * Warning = `1`
+        * Ignore = `2`
+    * **Special:** Only included if changed from global settings for validation
+* **Key:** `vals/[validatorID]/groups`
+    * **Defined by Constant:** [PrefConstants].groups
+    * **Value:** For Each Group: `"0" + "1" + [int] + ["include" || "exclude"] + [int] + [int] + [serialized rules]`
+    * **Value Defined By:** {length of serialization version - 1} + {serializtion version} + {group type being described} + {length of the number of rules - 1} + {number of rules defined} + {custom serialization for all rules - see specific serialization for each rule type}
+    * **Special:** Only included if changed from global settings for validation
+    
+##### Serialization for Specific Filter Rules
+
+TODO
     
 #### Example file
 
@@ -102,6 +133,7 @@ The project is overriding global settings and is not suspending validation
     vals/validator.one/global=TT01
     vals/validator.two/global=FT02
     vals/validator.three/global=TT031718delegate.validator
+    vals/validator.three/msgs=115message.severity00
     
 
 
@@ -116,3 +148,4 @@ The project is overriding global settings and is not suspending validation
 [PrefConstants]: https://github.com/eclipse/webtools.common/blob/master/plugins/org.eclipse.wst.validation/vf2/org/eclipse/wst/validation/internal/PrefConstants.java
 [ExtensionConstants]: https://github.com/eclipse/webtools.common/blob/master/plugins/org.eclipse.wst.validation/vf2/org/eclipse/wst/validation/internal/ExtensionConstants.java
 [MessageSeveritySetting]: https://github.com/eclipse/webtools.common/blob/master/plugins/org.eclipse.wst.validation/vf2/org/eclipse/wst/validation/MessageSeveritySetting.java
+[Serializer]: https://github.com/eclipse/webtools.common/blob/master/plugins/org.eclipse.wst.validation/vf2/org/eclipse/wst/validation/internal/Serializer.java
