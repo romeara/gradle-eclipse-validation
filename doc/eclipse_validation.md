@@ -6,7 +6,7 @@ Eclipse validation preferences control what validators run on project source, an
 
 ## Builder Options
 
-TODO org.eclipse.wst.validation.validationbuilder
+The "Add a separate validation builder" selection in a project's validation options behaves differently than most preferences. When selected, it adds a builder entry with the ID `org.eclipse.wst.validation.validationbuilder`. When de-selected, it registers the builder as an inactive external builder
 
 ## Preference Behavior
 
@@ -27,7 +27,7 @@ Preference handling and formatting is spread across several files - the formatti
     
 ## Known Validator IDs
 
-Validator ID is used heavily in prefence storage. Some known IDs are:
+Validator ID is used heavily in preference storage. Some known IDs are:
 
 TODO
     
@@ -109,6 +109,28 @@ For most of the values specific to each validator, the [Serializer] plays a larg
 ##### Serialization for Specific Filter Rules
 
 TODO
+
+* **Rule Type:** Content Type
+    * **Defined by Constant:** [FilterRule].ContentType
+    * TODO
+* **Rule Type:** Facet
+    * **Defined by Constant:** [FilterRule].Facet
+    * TODO
+* **Rule Type:** Target Runtime
+    * **Defined by Constant:** [FilterRule].TargetRuntime
+    * TODO
+* **Rule Type:** Project Nature
+    * **Defined by Constant:** [FilterRule].Project Nature
+    * TODO
+* **Rule Type:** File
+    * **Defined by Constant:** [FilterRule].File
+    * TODO
+* **Rule Type:** File Extension
+    * **Defined by Constant:** [FilterRule].FileExt
+    * TODO
+* **Rule Type:** File Pattern
+    * **Defined by Constant:** [FilterRule].FilePattern
+    * TODO
     
 #### Example file
 
