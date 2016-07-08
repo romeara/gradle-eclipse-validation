@@ -84,17 +84,21 @@ TODO
 
 For each validator, the Eclipse framework supports 3 keys. These utilize the validator's unique ID in their specification, indicated by `[validtorID]`
 
-For most of the values specific to each validator, the [Serializer] plays a large role in how the preferences are saved into the properties file. Most strings are preceeded by their length minus 1, and most numeric values (including the string lengths) are also preceeded by the number of digits in them minus 1. For example, the string "example", when passed through the serializer, results in `06example` 
+For most of the values specific to each validator, the [Serializer] plays a large role in how the preferences are saved into the properties file. Most strings are preceeded by their length minus 1, and most numeric values (including the string lengths) are also preceeded by the number of digits in them minus 1. 
+
+This will be annotated below by ser_str:[value]. Following this pattern, the string "example", when passed through the serializer, would result in `06example`, and would be annotated as ser_str:"example"
+
+Similar, serialized numbers (outside the length of strings) will be annotated by ser_num:[value]. So the number 12, passed through the serializer, woudl result in `112`, and would be annotated as ser_num:"12"  
 
 * **Key:** `vals/[validatorID]/global`
     * **Defined by Constant:** [PrefConstants].global
-    * **Value:** `["T" || "F"] + ["T" || "F"] + [int] + [int] + ["" || ([int] + [int] + [delegateID])]`
-    * **Value Defined By:** {validator manual setting (true/false)} + {validator build setting(true/false)} + {length of validator version number - 1} + {validator version} + {length of the length of the delegate ID, if delegating} + {length of delegate ID - 1, if delegating} + {delegate ID, if delegating}
+    * **Value:** `["T" || "F"] + ["T" || "F"] + ser_num:[validatorVersion] + ["" || ser_str:[delegateID]]`
+    * **Value Defined By:** {validator manual setting (true/false)} + {validator build setting(true/false)} + {serialized validator version} + {serialized delegate ID, if delegating}
     * **Special:** Only included if changed from global settings for validation
 * **Key:** `vals/[validatorID]/msgs`
     * **Defined by Constant:** [PrefConstants].msgs
-    * **Value:** For Each Severity: `[int] + [int] + [message setting ID] + [int] + [int]`
-    * **Value Defined By:** {length of the length of the message setting ID - 1} + {length of the message setting ID} + {messaging setting ID} + {length of the severity setting - 1} + {severity setting}
+    * **Value:** For Each Severity: `ser_str:[message setting ID] + ser_num:[severity]`
+    * **Value Defined By:** {serialized messaging setting ID} + {serialized severity setting}
     * **Severity Settings:**
         * Error = `0`
         * Warning = `1`
@@ -102,27 +106,29 @@ For most of the values specific to each validator, the [Serializer] plays a larg
     * **Special:** Only included if changed from global settings for validation
 * **Key:** `vals/[validatorID]/groups`
     * **Defined by Constant:** [PrefConstants].groups
-    * **Value:** For Each Group: `"0" + "1" + [int] + ["include" || "exclude"] + [int] + [int] + [serialized rules]`
-    * **Value Defined By:** {length of serialization version - 1} + {serializtion version} + {group type being described} + {length of the number of rules - 1} + {number of rules defined} + {custom serialization for all rules - see specific serialization for each rule type}
+    * **Value:** For Each Group: `ser_num:"1" + ["include" || "exclude"] + ser_num:[numRules] + [serialized rules]`
+    * **Value Defined By:** {serialized serializtion version} + {group type being described} + {serialized number of rules defined} + {custom serialization for all rules - see specific serialization for each rule type}
     * **Special:** Only included if changed from global settings for validation
     
 ##### Serialization for Specific Filter Rules
 
-TODO
-
 * **Rule Type:** Content Type
     * **Defined by Constant:** [FilterRule].ContentType
-    * TODO
+    * **Value:** `ser_str:"contentType" + ser_str:[pattern] + ["T" || "F"]`
+    * **Value Defined By:**  [ExtensionConstants].Rule.ContentType + {serialized content type pattern} + {exact match (true/false)}
 * **Rule Type:** Facet
     * **Defined by Constant:** [FilterRule].Facet
-    * TODO
+    * **Value:** `ser_str:"facet" + ser_str:[facetID]`
+    * **Value Defined By:** [ExtensionConstants].Rule.Facet + {serialized ID of the facet}
 * **Rule Type:** Target Runtime
     * **Defined by Constant:** [FilterRule].TargetRuntime
-    * TODO
+    * **Value:** `ser_str:"targetRuntime" + ser_str:[runtimeId]`
+    * **Value Defined By:** [ExtensionConstants].Rule.targetRuntime + {serialized runtime ID}
 * **Rule Type:** Project Nature
     * **Defined by Constant:** [FilterRule].Project Nature
-    * TODO
-* **Rule Type:** File
+    * **Value:** `ser_str:"projectNature" + ser_str:[natureId]`
+    * **Value Defined By:** [ExtensionConstants].Rule.projectNature + {serialized nature ID}
+* **Rule Type:** File 
     * **Defined by Constant:** [FilterRule].File
     * TODO
 * **Rule Type:** File Extension
