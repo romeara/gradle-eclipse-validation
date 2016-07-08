@@ -84,11 +84,11 @@ TODO
 
 For each validator, the Eclipse framework supports 3 keys. These utilize the validator's unique ID in their specification, indicated by `[validtorID]`
 
-For most of the values specific to each validator, the [Serializer] plays a large role in how the preferences are saved into the properties file. Most strings are preceeded by their length minus 1, and most numeric values (including the string lengths) are also preceeded by the number of digits in them minus 1. 
+For most of the values specific to each validator, the [Serializer] plays a large role in how the preferences are saved into the properties file. Most strings are preceeded by their length minus 1 and the length of their length minus 1. Most numeric values (including the string lengths) are also preceeded by the number of digits in them minus 1. 
 
-This will be annotated below by ser_str:[value]. Following this pattern, the string "example", when passed through the serializer, would result in `06example`, and would be annotated as ser_str:"example"
+This will be annotated below by ser_str:[value]. Following this pattern, the string "example", when passed through the serializer, would result in `06example`, and would be annotated as ser\_str:"example"
 
-Similar, serialized numbers (outside the length of strings) will be annotated by ser_num:[value]. So the number 12, passed through the serializer, woudl result in `112`, and would be annotated as ser_num:"12"  
+Similar, serialized numbers (outside the length of strings) will be annotated by ser_num:[value]. So the number 12, passed through the serializer, woudl result in `112`, and would be annotated as ser\_num:"12"  
 
 * **Key:** `vals/[validatorID]/global`
     * **Defined by Constant:** [PrefConstants].global
@@ -107,7 +107,7 @@ Similar, serialized numbers (outside the length of strings) will be annotated by
 * **Key:** `vals/[validatorID]/groups`
     * **Defined by Constant:** [PrefConstants].groups
     * **Value:** For Each Group: `ser_num:"1" + ["include" || "exclude"] + ser_num:[numRules] + [serialized rules]`
-    * **Value Defined By:** {serialized serializtion version} + {group type being described} + {serialized number of rules defined} + {custom serialization for all rules - see specific serialization for each rule type}
+    * **Value Defined By:** {serialized serialization version} + {group type being described} + {serialized number of rules defined} + {custom serialization for all rules - see specific serialization for each rule type}
     * **Special:** Only included if changed from global settings for validation
     
 ##### Serialization for Specific Filter Rules
@@ -115,11 +115,11 @@ Similar, serialized numbers (outside the length of strings) will be annotated by
 * **Rule Type:** Content Type
     * **Defined by Constant:** [FilterRule].ContentType
     * **Value:** `ser_str:"contentType" + ser_str:[pattern] + ["T" || "F"]`
-    * **Value Defined By:**  [ExtensionConstants].Rule.ContentType + {serialized content type pattern} + {exact match (true/false)}
+    * **Value Defined By:**  [ExtensionConstants].Rule.contentType + {serialized content type pattern} + {exact match (true/false)}
 * **Rule Type:** Facet
     * **Defined by Constant:** [FilterRule].Facet
     * **Value:** `ser_str:"facet" + ser_str:[facetID]`
-    * **Value Defined By:** [ExtensionConstants].Rule.Facet + {serialized ID of the facet}
+    * **Value Defined By:** [ExtensionConstants].Rule.facet + {serialized ID of the facet}
 * **Rule Type:** Target Runtime
     * **Defined by Constant:** [FilterRule].TargetRuntime
     * **Value:** `ser_str:"targetRuntime" + ser_str:[runtimeId]`
@@ -130,13 +130,20 @@ Similar, serialized numbers (outside the length of strings) will be annotated by
     * **Value Defined By:** [ExtensionConstants].Rule.projectNature + {serialized nature ID}
 * **Rule Type:** File 
     * **Defined by Constant:** [FilterRule].File
-    * TODO
+    * **Value:** `ser_str:"file" + ser_str:[pattern] + ["T" || "F"] + ser_num:[type]`
+    * **Value Defined By:** [ExtensionConstants].Rule.file + {serialized file pattern} + {case sensitive true/false} + {file type}
+    * **File Types:**
+        * File = `1` ([FilterRule].File.FileTypeFile) - A simple file name
+        * Folder = `2` ([FilteRule].File.FileTypeFolder) - A (project-relative) folder path. Always ends with `/`
+        * Full File Path = `3` ([FilterRule].File.FileTypeFull) - A complete project-relative path to a file
 * **Rule Type:** File Extension
     * **Defined by Constant:** [FilterRule].FileExt
-    * TODO
+    * **Value:** `ser_str:"fileext" + ser_str:[pattern] + ["T" || "F"]`
+    * **Value Defined By:** [ExtensionConstants].Rule.fileext + {file extension pattern} + {case sensitive true/false}
 * **Rule Type:** File Pattern
     * **Defined by Constant:** [FilterRule].FilePattern
-    * TODO
+    * **Value:** `ser_str:"pattern" + ser_str:[pattern] + ["T" || "F"]`
+    * **Value Defined By:** [ExtensionConstants].Rule.pattern + {regex file pattern} + {case sensitive true/false}
     
 #### Example file
 
