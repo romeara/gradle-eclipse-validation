@@ -25,12 +25,6 @@ Preference handling and formatting is spread across several files - the formatti
 * [org.eclipse.wst.validation.internal.ProjectConfiguration][ProjectConfiguration].store()
     * Handles top-level non-validator related preferences
     
-## Known Validator IDs
-
-Validator ID is used heavily in preference storage. Some known IDs are:
-
-TODO
-    
 ## Preference Key/Value Specification
 
 ### Relevant Classes
@@ -44,8 +38,6 @@ TODO
 * [org.eclipse.wst.validation.MessageSeveritySetting][MessageSeveritySetting]
 * [org.eclipse.wst.validation.internal.model.FilterGroup][FilterGroup]
 * [org.eclipse.wst.validation.internal.Serializer][Serializer]
-
-
 
 ### Key/Value Layout
 
@@ -169,6 +161,8 @@ The project is overriding global settings and is not suspending validation
     vals/validator.two/global=FT02
     vals/validator.three/global=TT031718delegate.validator
     vals/validator.three/msgs=115message.severity00
+    vals/validotor.one/groups=01include0103filesrc/stuff/F02
+    vals/validotor.two/groups=01include0103filesrc/stuff/F0201exclude01112projectNature117org.project.nature
     
 
 
