@@ -17,14 +17,31 @@ package com.rsomeara.gradle.eclipse.validation
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.plugins.ide.eclipse.EclipsePlugin
+import org.gradle.plugins.ide.eclipse.model.EclipseModel
+import org.gradle.util.ConfigureUtil
 
 public class EclipseValidationPlugin implements Plugin<Project> {
 
-	void apply(Project project) {
-		project.task('hello') << { println "Hello from the EclipseValidationPlugin" }
+    //Add validation to EclipseModel via meta-classes. Feels a little hack-ish, but allows the user to define validation within the existing Eclipse scope
+    static{
+        EclipseModel.metaClass.wstValidation = new EclipseValidation()
+        EclipseModel.metaClass.validation = {closure -> ConfigureUtil.configure(closure, wstValidation)}
+    }
 
-		//Requires the Eclipse plug-in to be applied, as it adds elements to it
-		project.pluginManager.apply(EclipsePlugin)
-	}
+    void apply(Project project) {
+        project.task('hello') << { println "Hello from the EclipseValidationPlugin" }
+
+        //Requires the Eclipse plug-in to be applied, as it adds elements to it
+        project.pluginManager.apply(EclipsePlugin)
+
+        //Add task dependency
+        Task lifecycleTask = project.task('eclipseWstValidation');
+        project.configure(lifecycleTask, {
+            EclipseModel eclipseModel = project.extensions.getByType(EclipseModel)
+            println "Separate Builder: " + eclipseModel.wstValidation.separateBuilder
+        })
+        project.tasks.getByName(EclipsePlugin.ECLIPSE_TASK_NAME).dependsOn(lifecycleTask)
+    }
 }
