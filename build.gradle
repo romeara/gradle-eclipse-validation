@@ -55,8 +55,8 @@ eclipse {
 	}
 }
 
-//Use the 2.0 wrapper so that gradleApi gets the 2.0 API jars
+//Use the 2.3 wrapper so that gradleApi gets the 2.3 API jars
 //Unfortunately this exposes us to issue GRADLE-1715 (https://issues.gradle.org/browse/GRADLE-1715)
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+    gradleVersion = '2.3'
 }
