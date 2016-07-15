@@ -25,6 +25,14 @@ To use in test projects, apply the plug-in via:
 
     apply plugin: 'com.rsomeara.gradle.eclipse.validation'
     
+And then set validation preferences, such as using a separate validation builder:
+
+    eclipse{
+	    validation{
+		    separateBuilder = false
+	    }
+    }
+    
 # Environment/Languages
 
 The plug-in uses Java 1.6 to match the Gradle 2.0 minimum environment
